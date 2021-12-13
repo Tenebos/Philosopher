@@ -6,7 +6,7 @@
 /*   By: aldamien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 14:34:12 by aldamien          #+#    #+#             */
-/*   Updated: 2021/12/13 15:02:14 by aldamien         ###   ########.fr       */
+/*   Updated: 2021/12/13 17:16:33 by aldamien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,15 @@ void	*death_loop(t_info *faustine)
 		ms = get_time();
 		if ((faustine->conclave[i].ms + faustine->time_to_die < ms))
 		{
-			printf("Le philosophe %d meurt\n", faustine->conclave[i].number);	
+			pthread_mutex_lock(&faustine->text);
 			faustine->stop = 1;
+			printf("\x1B[31m%ld, Philosopher %d died\033[0m\n", ms, i);
+			pthread_mutex_unlock(&faustine->text);
 		}
-		i++;
+		if (i + 1 < faustine->philo_nbr)
+			i++;
+		else
+			i = 0;
 	}
 	i = 0;
 	stop_all_loops(faustine);
@@ -82,11 +87,11 @@ void    *main_loop(t_philosopher *philo)
 		i++;
 		if (*philo->stop == 0)
 		{
-			printf("Le philosophe %d dort\n", philo->number);
+			ft_print("is sleeping", philo->number, philo->text, *philo->stop);
 			usleep(*philo->time_to_sleep);
 		}
 		if (*philo->stop == 0)
-			printf("Le philosophe %d pense\n", philo->number);
+			ft_print("is thinking", philo->number, philo->text, *philo->stop);
 	}
 	if (i == *philo->nbr_meat)
 		*philo->stop = 1;
@@ -97,10 +102,7 @@ void    *main_loop(t_philosopher *philo)
 void	active_mutex(t_philosopher *philo)
 {
 	if (philo->number % 2 == 0)
-	{
-		printf("active mutex\n");
 		pthread_mutex_lock(philo->one);
-	}
 	else
 		pthread_mutex_lock(philo->two);
 	if (philo->number % 2 == 0) 
@@ -125,14 +127,15 @@ void	ft_eat(t_philosopher *philo)
 {
 	if (*philo->stop == 0)
 	{
-		philo->ms = get_time();
 		philo->is_eating = 1;
 		active_mutex(philo);
 		if (philo->is_dead == 0)
-			printf("le philosophe %d mange\n", philo->number);
+			ft_print("has taken a fork", philo->number, philo->text, *philo->stop);
+		if (philo->is_dead == 0)
+			ft_print("is eating", philo->number, philo->text, *philo->stop);
 		usleep(*philo->time_to_eat);
 		philo->is_eating = 0;
-		philo->ms = 0;
+		philo->ms = get_time();
 		desactive_mutex(philo);
 	}
 

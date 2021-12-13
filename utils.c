@@ -6,7 +6,7 @@
 /*   By: aldamien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 09:41:04 by aldamien          #+#    #+#             */
-/*   Updated: 2021/12/03 17:36:00 by aldamien         ###   ########.fr       */
+/*   Updated: 2021/12/13 17:16:50 by aldamien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,17 @@ int	check_atoi(char *txt)
 		return (1);
 	}
 	return (0);
+}
+
+void	ft_print(char *txt, int nb, pthread_mutex_t *t1, int stop)
+{
+	int	i;
+
+	i = 0;
+		while (txt[i])
+			i++;
+		pthread_mutex_lock(t1);
+		if (stop == 0)
+			printf("%ld : Philosopher %d %s\n", get_time(), nb, txt);
+		pthread_mutex_unlock(t1);
 }

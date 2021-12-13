@@ -6,7 +6,7 @@
 /*   By: aldamien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 09:48:15 by aldamien          #+#    #+#             */
-/*   Updated: 2021/12/09 15:45:24 by aldamien         ###   ########.fr       */
+/*   Updated: 2021/12/13 16:45:08 by aldamien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ void	init_philo(t_info *info, int i)
 	info->conclave[i].time_to_sleep = &info->time_to_sleep;
 	info->conclave[i].nbr_meat = &info->nbr_meat;
 	info->conclave[i].is_eating = 0;
+	info->conclave[i].text = &info->text;
 	info->conclave[i].is_dead = 0;
 	info->conclave[i].stop = &info->stop;
 	info->conclave[i].safe_stop = 0;
-	info->conclave[i].ms = 0;
+	info->conclave[i].ms = get_time();
 }
 
 void	launcher(t_info *info)
@@ -50,13 +51,13 @@ void	launcher(t_info *info)
 			thread_launcher(&info->conclave[i]);
 		i++;
 	}
+	pthread_create(&t1, NULL, (void *)death_loop, info);
 	i = 0;
 	while (i < info->philo_nbr)
 	{
 		pthread_join(info->conclave[i].t1, NULL);
 		i++;	
 	}
-	pthread_create(&t1, NULL, (void *)death_loop, info);
 	pthread_join(t1, NULL);
 }
 

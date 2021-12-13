@@ -6,7 +6,7 @@
 /*   By: aldamien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 16:21:25 by aldamien          #+#    #+#             */
-/*   Updated: 2021/12/09 15:36:42 by aldamien         ###   ########.fr       */
+/*   Updated: 2021/12/13 17:13:21 by aldamien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,10 @@ int	check_param(int argc, char **argv)
 void	init_info(t_info *info, char **argv, int ac)
 {
 	info->philo_nbr = ft_atoi(argv[1]);
-	printf("philo_nbr = %d\n\n\n", info->philo_nbr);
 	info->time_to_die = ft_atoi(argv[2]);
-	info->time_to_eat = ft_atoi(argv[3]);
-	printf("time to eat = %d\n", info->time_to_eat);
-	info->time_to_sleep = ft_atoi(argv[4]);
+	info->time_to_eat = ft_atoi(argv[3]) * 1000;
+	info->time_to_sleep = ft_atoi(argv[4]) * 1000;
+	info->text = init_mutex();
 	if (ac == 6)
 		info->nbr_meat = ft_atoi(argv[5]);
 	else

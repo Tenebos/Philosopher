@@ -6,7 +6,7 @@
 /*   By: aldamien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:23:21 by aldamien          #+#    #+#             */
-/*   Updated: 2021/12/09 13:14:58 by aldamien         ###   ########.fr       */
+/*   Updated: 2021/12/13 16:54:58 by aldamien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_philosopher
 	int	number;
 	pthread_mutex_t	*one;
 	pthread_mutex_t	*two;
+	pthread_mutex_t *text;
 	const int	*time_to_eat;
 	const int	*time_to_sleep;
 	const int	*time_to_die;
@@ -41,6 +42,7 @@ typedef struct s_info
 {
 	t_philosopher	*conclave;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t text;
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	time_to_die;
@@ -85,7 +87,7 @@ void	clean_philo(t_info *info);
 // utils
 int	ft_atoi(char *txt);
 int	check_atoi(char *txt);
-
+void	ft_print(char *txt, int nb, pthread_mutex_t *t1, int stop);
 
 //debug
 void	analyze_philosopher(const t_philosopher *analyzed);
