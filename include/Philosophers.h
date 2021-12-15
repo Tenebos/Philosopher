@@ -6,7 +6,7 @@
 /*   By: aldamien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:23:21 by aldamien          #+#    #+#             */
-/*   Updated: 2021/12/13 16:54:58 by aldamien         ###   ########.fr       */
+/*   Updated: 2021/12/14 15:24:01 by aldamien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_philosopher
 	const int	*time_to_sleep;
 	const int	*time_to_die;
 	const int	*nbr_meat;
-	int		is_eating;
+	int		enought_eat;
 	long		ms;
 	int		is_dead;
 	int		*stop;
@@ -52,8 +52,8 @@ typedef struct s_info
 }	t_info;
 
 //loop
-void	active_mutex(t_philosopher *philo);
-void	desactive_mutex(t_philosopher *philo);
+void	active_mutex(t_philosopher *philo, int pair);
+void	desactive_mutex(t_philosopher *philo, int pair);
 void	ft_eat(t_philosopher *philo);
 void	*death_loop(t_info *info);
 void	stop_all_loops(t_info *faustine);
@@ -70,8 +70,9 @@ void	init_info(t_info *info, char **argv, int ac);
 // init;
 int	create_philosopher(t_info *info, int end);
 pthread_mutex_t	init_mutex(void);
-int	create_fork(t_info *info, int i);
-void	init_philo(t_info *info, int i);
+void	create_fork(t_info *info, int i);
+void	create_fork_one(t_info *info);
+void	init_philo(t_info *info, int i, long int time);
 
 //simulation
 // int	rise_philosopher(t_philosopher *phil_rising);
@@ -87,7 +88,7 @@ void	clean_philo(t_info *info);
 // utils
 int	ft_atoi(char *txt);
 int	check_atoi(char *txt);
-void	ft_print(char *txt, int nb, pthread_mutex_t *t1, int stop);
+long int	ft_print(char *txt,long int t, t_philosopher *philo);
 
 //debug
 void	analyze_philosopher(const t_philosopher *analyzed);

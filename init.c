@@ -6,7 +6,7 @@
 /*   By: aldamien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 16:21:25 by aldamien          #+#    #+#             */
-/*   Updated: 2021/12/13 17:13:21 by aldamien         ###   ########.fr       */
+/*   Updated: 2021/12/14 15:38:12 by aldamien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,17 @@ int	check_param(int argc, char **argv)
 			return (-1);
 		}
 		i++;
+	}
+	if (ft_atoi(argv[1]) == 0)
+	{
+		printf("not enought Philosophers");
+		return (-1);
+	}
+	if (ft_atoi(argv[1]) == 1)
+	{
+		usleep(atoi(argv[2]));
+		printf("%ld : Philosopher 0 died\n", get_time());
+		return (-1);
 	}
 	return (1);
 
@@ -72,7 +83,7 @@ pthread_mutex_t init_mutex(void)
         return (one);
 }
 
-int     create_fork(t_info *info, int nb)
+void    create_fork(t_info *info, int nb)
 {
         int     i;
 
@@ -91,4 +102,13 @@ int     create_fork(t_info *info, int nb)
                 i++;
         }
         info->conclave[nb - 1].two = &info->forks[0];
+}
+
+void     create_fork_one(t_info *info)
+{
+
+                info->forks[0] = init_mutex();
+                info->conclave[0].one = &info->forks[0];
+                info->forks[1] = init_mutex();
+                info->conclave[0].two = &info->forks[1];
 }

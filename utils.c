@@ -6,7 +6,7 @@
 /*   By: aldamien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 09:41:04 by aldamien          #+#    #+#             */
-/*   Updated: 2021/12/13 17:16:50 by aldamien         ###   ########.fr       */
+/*   Updated: 2021/12/14 15:19:43 by aldamien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_atoi(char *txt)
 		i++;
 	}
 	if (txt[0] == '-')
-		nb * (-1);
+		nb *= -1;
 	return(nb);
 }
 
@@ -49,15 +49,17 @@ int	check_atoi(char *txt)
 	return (0);
 }
 
-void	ft_print(char *txt, int nb, pthread_mutex_t *t1, int stop)
+long int	ft_print(char *txt, long int t, t_philosopher *philo)
 {
-	int	i;
+	long int	time;
 
-	i = 0;
-		while (txt[i])
-			i++;
-		pthread_mutex_lock(t1);
-		if (stop == 0)
-			printf("%ld : Philosopher %d %s\n", get_time(), nb, txt);
-		pthread_mutex_unlock(t1);
+		if (t == 0)
+			time = get_time();
+		else
+			time = t;
+		pthread_mutex_lock(philo->text);
+		if (*philo->stop == 0)
+			printf("%ld : Philosopher %d %s\n", time, philo->number, txt);
+		pthread_mutex_unlock(philo->text);
+		return (time);
 }
