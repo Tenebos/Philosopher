@@ -1,7 +1,9 @@
 SRC    = clean.c\
 	 debug.c\
 	 init.c\
+	 init2.c\
 	 loop.c\
+	 loop2.c\
 	 main.c\
 	 time.c\
 	 utils.c
@@ -29,4 +31,3 @@ fclean: clean
 re:     fclean all
 
 .PHONY: all fclean clean re
-

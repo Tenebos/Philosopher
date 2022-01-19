@@ -6,7 +6,7 @@
 /*   By: aldamien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 09:48:15 by aldamien          #+#    #+#             */
-/*   Updated: 2021/12/14 15:34:04 by aldamien         ###   ########.fr       */
+/*   Updated: 2022/01/19 14:03:29 by aldamien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,8 @@ void	init_philo(t_info *info, int i, long int time)
 	info->conclave[i].ms = time;
 }
 
-void	launcher(t_info *info)
+static int	launcher2(t_info *info, int i, long int time)
 {
-	int	i;
-	pthread_t	t1;
-	long int	time;
-
-	i = 0;
-	time = get_time();
 	while (i < info->philo_nbr)
 	{
 		init_philo(info, i, time);
@@ -58,21 +52,33 @@ void	launcher(t_info *info)
 			thread_launcher(&info->conclave[i]);
 		i++;
 	}
+	return (i);
+}
+
+void	launcher(t_info *info)
+{
+	int			i;
+	pthread_t	t1;
+	long int	time;
+
+	i = 0;
+	time = get_time();
+	i = launcher2(info, i, time);
 	pthread_create(&t1, NULL, (void *)death_loop, info);
 	i = 0;
 	while (i < info->philo_nbr)
 	{
 		pthread_join(info->conclave[i].t1, NULL);
-		i++;	
+		i++;
 	}
 	pthread_join(t1, NULL);
 }
 
 int	main(int argc, char **argv)
 {
-	int	i;
+	int		i;
 	t_info	info;
-	int	check;
+	int		check;
 
 	check = check_param(argc, argv);
 	if (check < 0)
@@ -80,21 +86,11 @@ int	main(int argc, char **argv)
 	init_info(&info, argv, argc);
 	i = atoi(argv[1]);
 	info.conclave = malloc(sizeof(t_philosopher) * i);
-		info.forks = malloc(sizeof(pthread_mutex_t) * i);
+	info.forks = malloc(sizeof(pthread_mutex_t) * i);
 	create_philosopher(&info, i);
 	if (i != 1)
 		create_fork(&info, i);
-	//	show_info(&info);
-//	pthread_create(&t1, NULL, death_loop, &info);
 	launcher(&info);
-//	pthread_join(t1, NULL);
-	//	i--;
-	//	while (i >= 0)
-	//	{
-	//		analyze_philosopher(&(info.conclave[i]));
-	//		i--;
-	//	}
-	//	i = 0;
 	clean_philo(&info);
 	return (1);
 }

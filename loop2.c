@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   loop2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldamien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aldamien <aldamien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/04 15:00:01 by aldamien          #+#    #+#             */
-/*   Updated: 2022/01/19 13:48:41 by aldamien         ###   ########.fr       */
+/*   Created: 2022/01/19 11:55:15 by aldamien          #+#    #+#             */
+/*   Updated: 2022/01/19 11:58:39 by aldamien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/Philosophers.h"
 
-long	get_time(void)
+void	enought(t_info *faustine)
 {
-	struct timeval	time;
-	long			ms;
+	int	j;
 
-	gettimeofday(&time, NULL);
-	ms = time.tv_sec * 1000;
-	ms += time.tv_usec / 1000;
-	return (ms);
+	j = 0;
+	while (j < faustine->philo_nbr)
+	{
+		if (faustine->conclave[j].enought_eat == 1)
+			j++;
+		else
+			break ;
+		if (j == faustine->philo_nbr)
+			faustine->stop = 1;
+	}
 }

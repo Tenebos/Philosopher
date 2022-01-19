@@ -6,11 +6,17 @@
 /*   By: aldamien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 16:21:25 by aldamien          #+#    #+#             */
-/*   Updated: 2021/12/14 15:38:12 by aldamien         ###   ########.fr       */
+/*   Updated: 2022/01/19 15:09:01 by aldamien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/Philosophers.h"
+
+int	error(char *str)
+{
+	printf("%s\n", str);
+	return (-1);
+}
 
 int	check_param(int argc, char **argv)
 {
@@ -19,25 +25,16 @@ int	check_param(int argc, char **argv)
 
 	i = 1;
 	if (argc != 5 && argc != 6)
-	{
-		printf("not enought or too much parameters\n");
-		return (-1);
-	}
+		return (error("not enought or too much parameters\n"));
 	while (i < argc)
 	{
 		check = check_atoi(argv[i]);
 		if (check < 0)
-		{
-			printf("parameter error\n");
-			return (-1);
-		}
+			return (error("parameter error\n"));
 		i++;
 	}
 	if (ft_atoi(argv[1]) == 0)
-	{
-		printf("not enought Philosophers");
-		return (-1);
-	}
+		return (error("not enought Philosophers"));
 	if (ft_atoi(argv[1]) == 1)
 	{
 		usleep(atoi(argv[2]));
@@ -45,7 +42,6 @@ int	check_param(int argc, char **argv)
 		return (-1);
 	}
 	return (1);
-
 }
 
 void	init_info(t_info *info, char **argv, int ac)
@@ -60,55 +56,26 @@ void	init_info(t_info *info, char **argv, int ac)
 	else
 		info->nbr_meat = -1;
 	info->stop = 0;
-
 }
 
-int     create_philosopher(t_info *info, int end)
+int	create_philosopher(t_info *info, int end)
 {
-        int     i;
+	int		i;
 
-        i = 0;
-        while (i < end)
-        {
-                info->conclave[i].number = i;
-                info->conclave[i].pid = -1;
-                i++;
-        }
-        return (1);
+	i = 0;
+	while (i < end)
+	{
+		info->conclave[i].number = i;
+		info->conclave[i].pid = -1;
+		i++;
+	}
+	return (1);
 }
 
-pthread_mutex_t init_mutex(void)
+pthread_mutex_t	init_mutex(void)
 {
-        pthread_mutex_t one = PTHREAD_MUTEX_INITIALIZER;
-        return (one);
-}
+	pthread_mutex_t	one;
 
-void    create_fork(t_info *info, int nb)
-{
-        int     i;
-
-        i = 0;
-        while (i < nb)
-        {
-                info->forks[i] = init_mutex();
-                info->conclave[i].one = &info->forks[i];
-                i++;
-        }
-        i = 0;
-        while (i < nb)
-        {
-                if (i < nb)
-                        info->conclave[i].two = &info->forks[i + 1];
-                i++;
-        }
-        info->conclave[nb - 1].two = &info->forks[0];
-}
-
-void     create_fork_one(t_info *info)
-{
-
-                info->forks[0] = init_mutex();
-                info->conclave[0].one = &info->forks[0];
-                info->forks[1] = init_mutex();
-                info->conclave[0].two = &info->forks[1];
+	pthread_mutex_init(&one, NULL);
+	return (one);
 }

@@ -6,16 +6,16 @@
 /*   By: aldamien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 09:39:50 by aldamien          #+#    #+#             */
-/*   Updated: 2021/12/03 17:32:09 by aldamien         ###   ########.fr       */
+/*   Updated: 2022/01/19 12:00:51 by aldamien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/Philosophers.h"
 
-void    analyze_philosopher(const t_philosopher *analyzed)
+void	analyze_philosopher(const t_philosopher *analyzed)
 {
-        printf("pid = %d\n", analyzed->pid);
-        printf("number = %d\n", analyzed->number);
+	printf("pid = %d\n", analyzed->pid);
+	printf("number = %d\n", analyzed->number);
 	printf("adress one = %p\n", analyzed->one);
 	printf("adress two = %p\n", analyzed->two);
 }
